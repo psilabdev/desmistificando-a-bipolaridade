@@ -144,7 +144,10 @@
       <div id="interpretationBox" class="notice"></div>
       <h2>Conquistas</h2><div id="badgeList" class="badge-list"></div>
       <h2>Seu Caderno de Bordo</h2><div id="finalTakeaways" class="takeaways"></div>
-<div class="save-box">
+<div class="save-box" aria-live="polite">
+  <input id="participantId" type="hidden" value="">
+  <button id="saveMetricsBtn" type="button" hidden aria-hidden="true"></button>
+  <button id="downloadMetricsBtn" type="button" hidden aria-hidden="true"></button>
   <div id="saveStatus" class="mini-status">
     Registrando resultado automaticamente...
   </div>
