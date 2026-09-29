@@ -157,12 +157,13 @@ const SOURCES_EXTRA=[
  ['CVV','https://cvv.org.br/']
 ];
 
-const METRICS_ENDPOINT='';
+const METRICS_ENDPOINT='https://nayxpmyeqddqhxzragsw.supabase.co/rest/v1/learning_results';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_Cp9jZNth2r8FYO_Hy5iH3w_Wf_Tc-1W';
 const $=id=>document.getElementById(id);
 const screens=[...document.querySelectorAll('.screen')];
 let state;
 function resetState(){
-  state={phase:0,q:0,xp:0,firstTryCorrect:0,answeredQuestions:0,reviewed:0,attempts:0,phaseFirst:0,phaseXpStart:0,badges:[],completed:0,screen:'home',history:[],preIndex:0,preScore:0,postIndex:0,postScore:0,postAnswered:false,startTs:Date.now(),sent:false};
+  state={phase:0,q:0,xp:0,firstTryCorrect:0,answeredQuestions:0,reviewed:0,attempts:0,phaseFirst:0,phaseXpStart:0,badges:[],completed:0,screen:'home',history:[],preIndex:0,preScore:0,postIndex:0,postScore:0,postAnswered:false,startTs:Date.now(),sent:false,sessionId:(crypto.randomUUID?crypto.randomUUID():('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0,v=c==='x'?r:(r&3|8);return v.toString(16)})))};
 }
 resetState();
 
@@ -271,16 +272,16 @@ function renderJournal(){
 }
 function learningGain(){return state.postScore-state.preScore}
 function interpretation(){const g=learningGain(); if(g>=3) return 'Houve um ganho claro de aprendizagem entre o pré-teste e o pós-teste.'; if(g>=1) return 'Houve melhora no desempenho final. Vale revisar os pontos do Caderno para consolidar ainda mais.'; if(g===0) return 'O desempenho ficou estável. Isso pode indicar conhecimento prévio ou necessidade de revisar alguns conceitos para consolidar melhor.'; return 'O pós-teste teve menos acertos que o pré-teste. Isso não significa fracasso. Use o Caderno de Bordo e os feedbacks para revisar os pontos que geraram dúvida.';}
-function buildPayload(){return {timestamp:new Date().toISOString(),duration_seconds:Math.round((Date.now()-state.startTs)/1000),participant_id:$('participantId').value.trim()||null,pretest_score:state.preScore,posttest_score:state.postScore,learning_gain:learningGain(),practice_first_try:state.firstTryCorrect,practice_total:PHASES.reduce((n,p)=>n+p.qs.length,0),practice_reviewed:state.reviewed,xp:state.xp,badges:state.badges.map(b=>b.title),version:'v5'};}
+function buildPayload(){return {session_id:state.sessionId,participant_id:$('participantId').value.trim()||null,duration_seconds:Math.round((Date.now()-state.startTs)/1000),pretest_score:state.preScore,posttest_score:state.postScore,learning_gain:learningGain(),practice_first_try:state.firstTryCorrect,practice_total:PHASES.reduce((n,p)=>n+p.qs.length,0),practice_reviewed:state.reviewed,xp:state.xp,badges:state.badges.map(b=>b.title),version:'v5',user_agent:navigator.userAgent.slice(0,500)};}
 async function saveMetrics(){
   const status=$('saveStatus'); const payload=buildPayload();
   if(!METRICS_ENDPOINT){status.textContent='Nenhum endpoint configurado. Use o botão “Baixar resultado” ou edite a constante METRICS_ENDPOINT no app.js.'; return;}
   try{
     status.textContent='Enviando resultado...';
-    const res=await fetch(METRICS_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    status.textContent='Resultado enviado com sucesso.'; state.sent=true;
-  }catch(err){status.textContent='Falha ao enviar. Verifique o endpoint e o CORS do Apps Script.'; console.error(err);}
+    const res=await fetch(METRICS_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_PUBLISHABLE_KEY,'Authorization':'Bearer '+SUPABASE_PUBLISHABLE_KEY,'Prefer':'return=minimal'},body:JSON.stringify(payload)});
+    if(!res.ok){const detail=await res.text(); throw new Error('HTTP '+res.status+' '+detail);}
+    status.textContent='Resultado registrado com sucesso.'; state.sent=true;
+  }catch(err){status.textContent='Não foi possível registrar o resultado. Tente novamente.'; console.error(err);}
 }
 function downloadMetrics(){const payload=buildPayload(); const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='resultado-desmistificando-bipolaridade.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); $('saveStatus').textContent='Arquivo JSON baixado.';}
 function renderFinal(push=true){
