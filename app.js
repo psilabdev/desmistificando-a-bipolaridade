@@ -290,6 +290,10 @@ function renderFinal(push=true){
   const tk=$('finalTakeaways'); tk.innerHTML=''; PHASES.forEach(p=>{const d=document.createElement('div'); d.className='takeaway'; d.innerHTML='<b>'+p.icon+' '+p.title+'</b><div>'+p.takeaway+'</div>'; tk.appendChild(d)});
   const src=$('sources'); src.innerHTML=''; [...SOURCES,...SOURCES_EXTRA].forEach(([name,url])=>{const li=document.createElement('li'),a=document.createElement('a'); a.href=url; a.target='_blank'; a.rel='noopener'; a.textContent=name; li.appendChild(a); src.appendChild(li)});
   show('final',push);
+
+if (!state.sent) {
+  saveMetrics();
+}
 }
 
 $('backBtn').addEventListener('click',goBack);
