@@ -1,0 +1,29 @@
+VERSÃO V5 — melhorias principais
+
+1. botão de voltar sempre disponível
+2. imagens trocadas para WEBP e comparativo de episódios refeito em um bloco visual único
+3. pré-teste e pós-teste para avaliar aprendizagem
+4. prática gamificada separada da métrica de aprendizagem
+5. comportamento das alternativas de treino ajustado
+   - se errar, não revela a resposta certa imediatamente
+   - a pessoa precisa tentar novamente até acertar
+6. bloco final para registrar resultado
+7. suporte para envio a Google Sheets por Apps Script
+
+COMO USAR MÉTRICAS
+
+1. crie uma planilha no Google Sheets
+2. abra Extensões > Apps Script
+3. cole o conteúdo do arquivo GOOGLE_APPS_SCRIPT_METRICAS.gs
+4. substitua COLE_AQUI_O_ID_DA_PLANILHA pelo ID da sua planilha
+5. publique como Web App com acesso para "qualquer pessoa com o link"
+6. copie a URL publicada
+7. abra app.js e preencha a constante
+   const METRICS_ENDPOINT='SUA_URL_AQUI';
+8. publique o site
+
+ARQUIVOS PRINCIPAIS
+- index.html
+- styles.css
+- app.js
+- pasta assets
