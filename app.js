@@ -209,7 +209,9 @@ function renderPretest(push=true){
 function renderChapter(push=true){
   const p=PHASES[state.phase]; $('chapterImg').src=p.img; $('chapterImg').alt='Ilustração do capítulo '+p.id+': '+p.title;
   $('chapterNo').textContent='Capítulo '+p.id+' de 6'; $('chapterTitle').textContent=p.title; $('chapterSubtitle').textContent=p.subtitle;
-  const c=CHARACTERS[p.speaker]; $('speakerImg').src=c.img; $('speakerImg').alt='Retrato de '+c.name; $('speakerName').textContent=c.name; $('speakerText').textContent=p.dialogue; show('chapter',push);
+  const c=CHARACTERS[p.speaker]; $('speakerImg').src=c.img; $('speakerImg').alt='Retrato de '+c.name; $('speakerName').textContent=c.name; $('speakerText').textContent=p.dialogue;
+  $('openLessonBtn').disabled=false;
+  show('chapter',push);
 }
 function renderLesson(push=true){
   const p=PHASES[state.phase]; $('lessonNo').textContent='Capítulo '+p.id+' • leitura rápida'; $('lessonTitle').textContent=p.title;
@@ -221,7 +223,9 @@ function renderLesson(push=true){
   }else{
     compare.hidden=true; compare.innerHTML='';
   }
-  $('lessonKey').textContent=p.key; show('lesson',push);
+  $('lessonKey').textContent=p.key;
+  $('startMissionBtn').disabled=false;
+  show('lesson',push);
 }
 function renderQ(push=true){
   const p=PHASES[state.phase],q=p.qs[state.q]; state.attempts=0;
@@ -248,6 +252,7 @@ function nextQuestion(){const p=PHASES[state.phase]; if(state.q<p.qs.length-1){s
 function finishPhase(){state.completed++; state.badges.push({icon:PHASES[state.phase].icon,title:PHASES[state.phase].badge}); renderPhaseDone(true);}
 function renderPhaseDone(push=true){
   const p=PHASES[state.phase]; const bonus=state.phaseFirst===p.qs.length?15:0;
+  $('nextPhaseBtn').disabled=false;
   $('badgeIcon').textContent=p.icon; $('badgeTitle').textContent=p.badge+' desbloqueado'; $('badgeText').textContent='Você concluiu “'+p.title+'”. '+(bonus?'Todas as decisões foram corretas na primeira tentativa.':'Errar, receber feedback e tentar de novo também faz parte da aprendizagem.');
   $('phaseAccuracy').textContent=state.phaseFirst+'/'+p.qs.length+' na 1ª tentativa'; $('phaseXp').textContent=((state.xp-state.phaseXpStart)+(bonus?0:0))+' XP neste capítulo'+(bonus?' • bônus +15':'');
   const ul=$('phaseTakeaways'); ul.innerHTML=''; p.lessons.forEach(l=>{const li=document.createElement('li'); li.textContent=l[0]+': '+l[1]; ul.appendChild(li)}); show('phaseDone',push);
@@ -258,6 +263,7 @@ function nextPhase(){
 }
 function renderPosttest(push=true){
   const q=POSTTEST[state.postIndex]; $('postCount').textContent=(state.postIndex+1)+' de '+POSTTEST.length; $('postScene').textContent=q.scene; $('postText').textContent=q.q;
+  $('postNextBtn').disabled=true;
   const box=$('postOptions'); box.innerHTML=''; q.opts.forEach((o,i)=>{const b=document.createElement('button'); b.type='button'; b.className='option'; b.textContent=o; b.addEventListener('click',()=>answerPost(i)); box.appendChild(b)});
   $('postFeedback').className='feedback'; $('postFeedback').innerHTML=''; $('postNextBtn').disabled=true; state.postAnswered=false; show('posttest',push);
 }
