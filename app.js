@@ -163,7 +163,7 @@ const $=id=>document.getElementById(id);
 const screens=[...document.querySelectorAll('.screen')];
 let state;
 function resetState(){
-  state={phase:0,q:0,xp:0,firstTryCorrect:0,answeredQuestions:0,reviewed:0,attempts:0,phaseFirst:0,phaseXpStart:0,badges:[],completed:0,screen:'home',history:[],preIndex:0,preScore:0,postIndex:0,postScore:0,postAnswered:false,startTs:Date.now(),sent:false,sessionId:(crypto.randomUUID?crypto.randomUUID():('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0,v=c==='x'?r:(r&3|8);return v.toString(16)})))};
+  state={phase:0,q:0,xp:0,firstTryCorrect:0,answeredQuestions:0,reviewed:0,attempts:0,phaseFirst:0,phaseXpStart:0,badges:[],completed:0,screen:'home',history:[],preIndex:0,preScore:0,postIndex:0,postScore:0,postAnswered:false,preSelected:null,postSelected:null,startTs:Date.now(),sent:false,sessionId:(crypto.randomUUID?crypto.randomUUID():('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0,v=c==='x'?r:(r&3|8);return v.toString(16)})))};
 }
 resetState();
 
@@ -200,11 +200,45 @@ function renderScreen(id,push=true){
 function renderCast(push=true){show('cast',push)}
 function renderPretest(push=true){
   const q=PRETEST[state.preIndex];
+  state.preSelected=null;
   $('preCount').textContent=(state.preIndex+1)+' de '+PRETEST.length;
-  $('preScene').textContent=q.scene; $('preText').textContent=q.q;
-  const box=$('preOptions'); box.innerHTML='';
-  q.opts.forEach((o,i)=>{const b=document.createElement('button'); b.type='button'; b.className='option'; b.textContent=o; b.addEventListener('click',()=>{if(i===q.a) state.preScore++; if(state.preIndex<PRETEST.length-1){state.preIndex++; renderPretest(true);}else{state.phase=0;state.q=0;state.phaseFirst=0;state.phaseXpStart=state.xp; renderChapter(true);}}); box.appendChild(b)});
+  $('preScene').textContent=q.scene;
+  $('preText').textContent=q.q;
+
+  const box=$('preOptions');
+  box.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.type='button';
+    b.className='option';
+    b.textContent=o;
+    b.addEventListener('click',()=>{
+      state.preSelected=i;
+      [...box.querySelectorAll('.option')].forEach((btn,j)=>btn.classList.toggle('selected',j===i));
+      $('preNextBtn').disabled=false;
+    });
+    box.appendChild(b);
+  });
+
+  $('preNextBtn').disabled=true;
   show('pretest',push);
+}
+
+function confirmPretest(){
+  if(state.preSelected===null) return;
+  const q=PRETEST[state.preIndex];
+  if(state.preSelected===q.a) state.preScore++;
+
+  if(state.preIndex<PRETEST.length-1){
+    state.preIndex++;
+    renderPretest(true);
+  }else{
+    state.phase=0;
+    state.q=0;
+    state.phaseFirst=0;
+    state.phaseXpStart=state.xp;
+    renderChapter(true);
+  }
 }
 function renderChapter(push=true){
   const p=PHASES[state.phase];
@@ -283,17 +317,53 @@ function nextPhase(){
   if(state.phase>=PHASES.length){state.postIndex=0; state.postScore=0; renderPosttest(true);} else {renderChapter(true);} 
 }
 function renderPosttest(push=true){
-  const q=POSTTEST[state.postIndex]; $('postCount').textContent=(state.postIndex+1)+' de '+POSTTEST.length; $('postScene').textContent=q.scene; $('postText').textContent=q.q;
+  const q=POSTTEST[state.postIndex];
+  state.postSelected=null;
+  state.postAnswered=false;
+
+  $('postCount').textContent=(state.postIndex+1)+' de '+POSTTEST.length;
+  $('postScene').textContent=q.scene;
+  $('postText').textContent=q.q;
+
+  const box=$('postOptions');
+  box.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.type='button';
+    b.className='option';
+    b.textContent=o;
+    b.addEventListener('click',()=>answerPost(i));
+    box.appendChild(b);
+  });
+
+  $('postFeedback').className='feedback';
+  $('postFeedback').innerHTML='';
   $('postNextBtn').disabled=true;
-  const box=$('postOptions'); box.innerHTML=''; q.opts.forEach((o,i)=>{const b=document.createElement('button'); b.type='button'; b.className='option'; b.textContent=o; b.addEventListener('click',()=>answerPost(i)); box.appendChild(b)});
-  $('postFeedback').className='feedback'; $('postFeedback').innerHTML=''; $('postNextBtn').disabled=true; state.postAnswered=false; show('posttest',push);
+  show('posttest',push);
 }
+
 function answerPost(i){
-  if(state.postAnswered) return; state.postAnswered=true; const q=POSTTEST[state.postIndex]; const buttons=[...$('postOptions').querySelectorAll('.option')];
-  buttons.forEach(b=>{b.disabled=true; b.classList.add('locked')}); if(i===q.a){state.postScore++; buttons[i].classList.add('correct'); $('postFeedback').className='feedback show good'; $('postFeedback').innerHTML='<strong>✓ Correto</strong>'+q.exp;} else {buttons[i].classList.add('wrong'); buttons[q.a].classList.remove('locked'); buttons[q.a].classList.add('correct'); $('postFeedback').className='feedback show learn'; $('postFeedback').innerHTML='<strong>Veja a lógica</strong>'+q.exp;}
+  if(state.postAnswered) return;
+  state.postSelected=i;
+  const buttons=[...$('postOptions').querySelectorAll('.option')];
+  buttons.forEach((b,j)=>b.classList.toggle('selected',j===i));
   $('postNextBtn').disabled=false;
 }
-function nextPost(){if(state.postIndex<POSTTEST.length-1){state.postIndex++; renderPosttest(true);} else {renderFinal(true);}}
+
+function nextPost(){
+  if(state.postSelected===null) return;
+
+  const q=POSTTEST[state.postIndex];
+  if(state.postSelected===q.a) state.postScore++;
+  state.postAnswered=true;
+
+  if(state.postIndex<POSTTEST.length-1){
+    state.postIndex++;
+    renderPosttest(true);
+  }else{
+    renderFinal(true);
+  }
+}
 function renderJournal(){
   const box=$('journalList'); box.innerHTML=''; PHASES.forEach((p,i)=>{const unlocked=i<state.completed; const d=document.createElement('div'); d.className='journal-item '+(unlocked?'':'locked'); d.innerHTML='<b>'+(unlocked?p.icon:'🔒')+' '+p.title+'</b><span>'+(unlocked?p.takeaway:'Conclua este capítulo para desbloquear o resumo.')+'</span>'; box.appendChild(d)}); $('journalDialog').showModal();
 }
@@ -327,6 +397,7 @@ $('backBtn').addEventListener('click',goBack);
 $('startBtn').addEventListener('click',()=>renderCast(true));
 $('aboutBtn').addEventListener('click',()=>{$('aboutBox').hidden=!$('aboutBox').hidden});
 $('castNextBtn').addEventListener('click',()=>renderPretest(true));
+$('preNextBtn').addEventListener('click',confirmPretest);
 $('openLessonBtn').addEventListener('click',()=>renderLesson(true));
 $('startMissionBtn').addEventListener('click',()=>renderQ(true));
 $('nextBtn').addEventListener('click',nextQuestion);
