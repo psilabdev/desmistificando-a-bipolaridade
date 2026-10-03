@@ -18,7 +18,7 @@ const PHASES=[
  dialogue:'“Quando falaram em bipolaridade, eu pensei: então qualquer mudança de humor minha vai virar sintoma?”',badge:'Mapa do Humor',icon:'🧭',
  lessons:[
   ['Mais do que “altos e baixos”','O Transtorno Bipolar envolve episódios com mudanças marcantes de humor, energia, atividade e pensamento. O que importa é o conjunto, a duração, a intensidade e o impacto no funcionamento.'],
-  ['Existem apresentações diferentes','No Transtorno Bipolar I há episódio maníaco. No Bipolar II há episódios depressivos e hipomaníacos, sem episódio maníaco completo. A ciclotimia envolve oscilações recorrentes que não atingem critérios completos de episódios.'],
+  ['Existem apresentações diferentes','No Transtorno Bipolar I, a presença de pelo menos um episódio maníaco é definidora. No Transtorno Bipolar II, há episódios hipomaníacos e episódios depressivos maiores, sem episódio maníaco. A ciclotimia envolve períodos recorrentes com sintomas hipomaníacos e depressivos que não atingem critérios completos de episódios. Bipolar II não deve ser entendido simplesmente como uma versão “mais leve” do Bipolar I.'],
   ['Diagnóstico é longitudinal','Nenhum sintoma isolado, teste online ou dia ruim confirma bipolaridade. A avaliação considera história, padrão dos episódios, contexto, prejuízo, outras condições e uso de substâncias.']
  ],
  key:'Ponto-chave: aprender sinais ajuda no cuidado, mas reconhecer sinais não é o mesmo que fazer diagnóstico.',
@@ -272,7 +272,17 @@ function renderLesson(push=true){
   const p=PHASES[state.phase]; $('lessonNo').textContent='Capítulo '+p.id+' • leitura rápida'; $('lessonTitle').textContent=p.title;
   const g=$('lessonGrid');g.innerHTML=''; p.lessons.forEach((l,i)=>{const d=document.createElement('div'); d.className='lesson-card'; d.innerHTML='<div class="n">Pista '+(i+1)+'</div><h3>'+l[0]+'</h3><p>'+l[1]+'</p>'; g.appendChild(d)});
   const compare=$('episodeCompare');
-  if(p.id===2){
+  if(p.id===1){
+    compare.hidden=false;
+    compare.innerHTML=
+      '<div class="episode-head"><h3>Tipos e apresentações do espectro bipolar</h3><p>Uma comparação rápida para não confundir os principais quadros.</p></div>'+
+      '<div class="type-summary">'+
+        '<article><span class="type-kicker">Bipolar I</span><h4>Mania é o elemento definidor</h4><p>A presença de pelo menos um episódio maníaco é suficiente para caracterizar o Transtorno Bipolar I. Episódios depressivos podem ocorrer, mas não são obrigatórios para o diagnóstico.</p></article>'+
+        '<article><span class="type-kicker">Bipolar II</span><h4>Hipomania + depressão maior</h4><p>Há pelo menos um episódio hipomaníaco e pelo menos um episódio depressivo maior, sem história de episódio maníaco.</p></article>'+
+        '<article><span class="type-kicker">Ciclotimia</span><h4>Oscilações persistentes abaixo do limiar</h4><p>Há períodos recorrentes com sintomas hipomaníacos e depressivos que não atingem critérios completos para episódios de hipomania ou depressão maior.</p></article>'+
+      '</div>'+
+      '<p class="episode-note"><b>Importante:</b> Bipolar II não é simplesmente uma forma “mais leve” do Bipolar I. A hipomania é menos grave que a mania, mas o transtorno pode causar sofrimento e prejuízo importantes, especialmente durante episódios depressivos.</p>';
+  }else if(p.id===2){
     compare.hidden=false;
     compare.innerHTML='<div class="episode-head"><h3>Comparativo visual</h3><p>As imagens são apenas ilustrações de apoio. Não substituem avaliação clínica e não devem ser lidas como caricaturas fixas de cada estado.</p></div><img class="episode-wide" src="assets/p2.webp" alt="Comparativo visual entre estabilidade, hipomania, mania e depressão"><div class="episode-summary">'+EPISODE_VISUALS.map(e=>'<article><h4><span class="episode-dot dot-'+e.cls+'"></span>'+e.title+'</h4><div class="small">'+e.tag+'</div><ul>'+e.items.map(i=>'<li>'+i+'</li>').join('')+'</ul></article>').join('')+'</div><p class="episode-note"><b>Importante:</b> mania e hipomania não significam simplesmente “estar feliz”. Irritabilidade, agitação e desconforto também podem aparecer.</p>';
   }else{
