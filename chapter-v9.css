@@ -64,3 +64,39 @@ html[data-theme="dark"] .chapter-episode-card>div{
     padding:10px;
   }
 }
+
+
+/* v10 chapter image cleanup */
+.chapter-panel{
+  align-items:stretch;
+}
+
+.chapter-art{
+  display:block;
+  width:100%;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  aspect-ratio:auto!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  padding:0!important;
+  background:transparent!important;
+}
+
+@media(min-width:700px){
+  .chapter-panel{
+    grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr)!important;
+  }
+
+  .chapter-art{
+    align-self:center;
+    justify-self:stretch;
+  }
+}
+
+@media(max-width:699px){
+  .chapter-art{
+    width:100%;
+  }
+}
