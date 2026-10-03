@@ -59,3 +59,53 @@
   .journal-btn{padding:0 8px}
   .scene{font-size:17px;padding:17px 15px 15px}
 }
+
+
+/* UX v7 navigation polish */
+.nav-btn{
+  position:relative;
+  width:46px;
+  min-width:46px;
+  min-height:46px;
+  border:1px solid #b7cddd;
+  border-radius:14px;
+  background:linear-gradient(180deg,#ffffff 0%,#f4f8fb 100%);
+  color:#153f7d;
+  box-shadow:0 3px 10px rgba(17,55,80,.12), inset 0 1px 0 rgba(255,255,255,.8);
+  font-size:21px;
+  font-weight:900;
+  transition:transform .15s ease,box-shadow .15s ease,background .15s ease,border-color .15s ease;
+}
+.nav-btn:not(:disabled):hover{
+  background:linear-gradient(180deg,#ffffff 0%,#eaf3f8 100%);
+  border-color:#86abc0;
+  box-shadow:0 5px 14px rgba(17,55,80,.16);
+  transform:translateY(-1px);
+}
+.nav-btn:not(:disabled):active{
+  transform:translateY(0);
+  box-shadow:0 2px 6px rgba(17,55,80,.12);
+}
+.nav-btn:disabled{
+  opacity:.34;
+  background:#f4f7f9;
+  box-shadow:none;
+}
+#backBtn::after,#forwardBtn::after{
+  position:absolute;
+  bottom:-17px;
+  font-size:9px;
+  line-height:1;
+  font-weight:800;
+  letter-spacing:.02em;
+  color:#6f8594;
+  white-space:nowrap;
+}
+#backBtn::after{content:"Voltar"}
+#forwardBtn::after{content:"Avançar"}
+.topbar{padding-bottom:22px}
+@media(max-width:430px){
+  .nav-btn{width:44px;min-width:44px;min-height:44px;border-radius:13px}
+  #backBtn::after,#forwardBtn::after{font-size:8px;bottom:-15px}
+  .topbar{padding-bottom:20px}
+}
