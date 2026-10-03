@@ -1,0 +1,126 @@
+/* Mobile cover + reading typography v11 */
+
+/* Keep the full opening artwork visible on phones. */
+@media(max-width:699px){
+  .hero img{
+    width:100% !important;
+    height:auto !important;
+    aspect-ratio:auto !important;
+    object-fit:contain !important;
+    object-position:center !important;
+    background:transparent !important;
+  }
+}
+
+/* Slightly larger reading text without making the interface bulky. */
+.lead{
+  font-size:17.5px !important;
+  line-height:1.58 !important;
+}
+
+.small-intro{
+  font-size:14.5px !important;
+  line-height:1.5 !important;
+}
+
+.feature span{
+  font-size:14.5px !important;
+  line-height:1.48 !important;
+}
+
+.notice{
+  font-size:15px !important;
+  line-height:1.55 !important;
+}
+
+.person p{
+  font-size:14.5px !important;
+  line-height:1.5 !important;
+}
+
+.dialogue p{
+  font-size:15.5px !important;
+  line-height:1.55 !important;
+}
+
+.lesson-card p{
+  font-size:16.5px !important;
+  line-height:1.62 !important;
+}
+
+.keybox{
+  font-size:15.5px !important;
+  line-height:1.58 !important;
+}
+
+.episode-head p{
+  font-size:14px !important;
+  line-height:1.5 !important;
+}
+
+.episode-summary ul{
+  font-size:14.5px !important;
+  line-height:1.55 !important;
+}
+
+.episode-note{
+  font-size:14px !important;
+  line-height:1.52 !important;
+}
+
+.scene{
+  font-size:17.5px !important;
+  line-height:1.55 !important;
+}
+
+.option{
+  font-size:16.5px !important;
+  line-height:1.48 !important;
+}
+
+.feedback{
+  font-size:15.5px !important;
+  line-height:1.58 !important;
+}
+
+.retry{
+  font-size:13.5px !important;
+  line-height:1.45 !important;
+}
+
+.summary li{
+  font-size:14.5px !important;
+  line-height:1.55 !important;
+}
+
+.takeaway,
+.journal-item{
+  font-size:15px !important;
+  line-height:1.55 !important;
+}
+
+.journal-item span{
+  font-size:14px !important;
+  line-height:1.5 !important;
+}
+
+.refs li{
+  font-size:14.5px !important;
+  line-height:1.5 !important;
+}
+
+.refs p{
+  font-size:13.5px !important;
+  line-height:1.48 !important;
+}
+
+.small{
+  font-size:13.5px !important;
+}
+
+@media(max-width:430px){
+  .lead{font-size:17px !important}
+  .lesson-card p{font-size:16px !important}
+  .option{font-size:16px !important}
+  .dialogue p{font-size:15px !important}
+}
