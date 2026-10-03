@@ -7,15 +7,21 @@
   <meta name="description" content="Jornada interativa de psicoeducação sobre transtorno bipolar.">
   <title>Desmistificando a Bipolaridade</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="theme-v8.css">
 </head>
 <body>
 <main class="app">
   <header class="topbar" aria-label="Progresso da jornada">
     <div class="topline">
-      <button id="backBtn" class="icon-btn nav-btn" type="button" aria-label="Voltar" title="Voltar">←</button>
-      <button id="forwardBtn" class="icon-btn nav-btn" type="button" aria-label="Avançar" title="Avançar">→</button>
+      <button id="backBtn" class="icon-btn nav-btn" type="button" aria-label="Voltar" title="Voltar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/><path d="M8 12h10"/></svg>
+      </button>
+      <button id="forwardBtn" class="icon-btn nav-btn" type="button" aria-label="Avançar" title="Avançar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/><path d="M16 12H6"/></svg>
+      </button>
       <span class="chapter-pill" id="chapterStat">Jornada</span>
       <span class="xp-pill" id="xpStat">0 XP</span>
+      <button id="themeBtn" class="icon-btn theme-btn" type="button" aria-label="Alternar tema" title="Alternar tema">☾</button>
       <button class="journal-btn" id="journalBtn" type="button">📓 Caderno</button>
     </div>
     <div class="progress" aria-hidden="true"><div id="progressFill"></div></div>
@@ -166,5 +172,6 @@
 </dialog>
 <script src="app.js"></script>
 <script src="ux-v6.js"></script>
+<script src="theme-v8.js"></script>
 </body>
 </html>
