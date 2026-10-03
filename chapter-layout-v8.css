@@ -1,0 +1,16 @@
+/* Chapter image presentation fix */
+@media(min-width:700px){
+  .chapter-panel{
+    grid-template-columns:minmax(0,1fr) minmax(0,.9fr) !important;
+    align-items:stretch;
+  }
+  .chapter-art{
+    width:100% !important;
+    height:100% !important;
+    min-height:460px !important;
+    object-fit:contain !important;
+    object-position:center !important;
+    background:#f4f7f9 !important;
+    padding:10px !important;
+  }
+}
