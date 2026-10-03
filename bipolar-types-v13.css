@@ -1,0 +1,43 @@
+/* Bipolar spectrum comparison v13 */
+.type-summary{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+  margin-top:12px;
+}
+.type-summary article{
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:#fff;
+}
+.type-kicker{
+  display:inline-block;
+  margin-bottom:5px;
+  font-size:11px;
+  font-weight:950;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--teal);
+}
+.type-summary h4{
+  margin:0 0 6px;
+}
+.type-summary p{
+  margin:0;
+  font-size:15px;
+  line-height:1.55;
+  color:var(--muted);
+}
+html[data-theme="dark"] .type-summary article{
+  background:#182731;
+  border-color:#314a59;
+}
+html[data-theme="dark"] .type-summary p{
+  color:#b9c8d2;
+}
+@media(min-width:700px){
+  .type-summary{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+}
