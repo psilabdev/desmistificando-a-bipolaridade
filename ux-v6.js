@@ -1,242 +1,237 @@
 /*
-  UX v6 patch
-  - Browser-like back/forward review without forcing quiz answers again
-  - More visible navigation controls
-  - Post-test remains assessment-only: no correctness feedback during administration
+UX v7: navigation review without changing the live quiz state.
+Previous screens are read-only. Forward returns through visited screens.
+Post-test gives no correctness feedback during administration.
 */
-
 (() => {
-  const nav = {
-    trail: [],
-    index: 0,
-    replaying: false,
-    latestUi: null
-  };
+  const nav={trail:[],index:0,replaying:false,latestUi:null};
 
-  function viewPoint() {
+  function point(){
     return {
-      screen: state.screen,
-      phase: state.phase,
-      q: state.q,
-      preIndex: state.preIndex,
-      postIndex: state.postIndex,
-      phaseFirst: state.phaseFirst,
-      phaseXpStart: state.phaseXpStart,
-      completed: state.completed,
-      xp: state.xp,
-      firstTryCorrect: state.firstTryCorrect,
-      answeredQuestions: state.answeredQuestions,
-      reviewed: state.reviewed,
-      preScore: state.preScore,
-      postScore: state.postScore,
-      postAnswered: state.postAnswered,
-      badges: JSON.parse(JSON.stringify(state.badges || []))
+      screen:state.screen,phase:state.phase,q:state.q,
+      preIndex:state.preIndex,postIndex:state.postIndex,
+      phaseFirst:state.phaseFirst,phaseXpStart:state.phaseXpStart,
+      completed:state.completed,xp:state.xp
     };
   }
-
-  function samePoint(a, b) {
-    return !!a && a.screen === b.screen && a.phase === b.phase && a.q === b.q &&
-      a.preIndex === b.preIndex && a.postIndex === b.postIndex;
+  function same(a,b){
+    return !!a&&a.screen===b.screen&&a.phase===b.phase&&a.q===b.q&&
+      a.preIndex===b.preIndex&&a.postIndex===b.postIndex;
+  }
+  function only(id){
+    screens.forEach(s=>s.classList.toggle('active',s.id===id));
+    window.scrollTo({top:0,behavior:'smooth'});
   }
 
-  function captureCurrentUi() {
-    if (state.screen === 'quiz') {
-      const buttons = [...document.querySelectorAll('#options .option')];
+  function captureLatest(){
+    if(state.screen==='quiz'){
+      const bs=[...$('options').querySelectorAll('.option')];
       return {
-        kind: 'quiz',
-        completed: !$('nextBtn').disabled,
-        correct: buttons.findIndex(b => b.classList.contains('correct')),
-        wrong: buttons.map((b, i) => b.classList.contains('wrong') ? i : -1).filter(i => i >= 0),
-        feedbackClass: $('feedback').className,
-        feedbackHtml: $('feedback').innerHTML,
-        retry: $('retryHint').textContent
+        kind:'quiz',attempts:state.attempts,nextEnabled:!$('nextBtn').disabled,
+        correct:bs.findIndex(b=>b.classList.contains('correct')),
+        wrong:bs.map((b,i)=>b.classList.contains('wrong')?i:-1).filter(i=>i>=0),
+        feedbackClass:$('feedback').className,
+        feedbackHtml:$('feedback').innerHTML,
+        retry:$('retryHint').textContent
       };
     }
-    if (state.screen === 'posttest') {
-      const buttons = [...document.querySelectorAll('#postOptions .option')];
+    if(state.screen==='posttest'){
+      const bs=[...$('postOptions').querySelectorAll('.option')];
       return {
-        kind: 'posttest',
-        completed: !$('postNextBtn').disabled,
-        selected: buttons.findIndex(b => b.classList.contains('selected'))
+        kind:'posttest',postAnswered:state.postAnswered,
+        nextEnabled:!$('postNextBtn').disabled,
+        selected:bs.findIndex(b=>b.classList.contains('selected'))
       };
     }
     return null;
   }
 
-  function applyLatestUi(ui) {
-    if (!ui) return;
-    if (ui.kind === 'quiz' && state.screen === 'quiz') {
-      const buttons = [...document.querySelectorAll('#options .option')];
-      if (ui.completed) {
-        buttons.forEach(b => { b.disabled = true; b.classList.add('locked'); });
-        if (ui.correct >= 0 && buttons[ui.correct]) {
-          buttons[ui.correct].classList.remove('locked');
-          buttons[ui.correct].classList.add('correct');
-        }
-        ui.wrong.forEach(i => {
-          if (buttons[i]) buttons[i].classList.add('wrong');
-        });
-        $('feedback').className = ui.feedbackClass;
-        $('feedback').innerHTML = ui.feedbackHtml;
-        $('retryHint').textContent = ui.retry;
-        $('nextBtn').disabled = false;
+  function restoreLatest(ui){
+    if(!ui)return;
+    if(ui.kind==='quiz'&&state.screen==='quiz'){
+      state.attempts=ui.attempts;
+      const bs=[...$('options').querySelectorAll('.option')];
+      ui.wrong.forEach(i=>{
+        if(bs[i]){bs[i].classList.add('wrong','locked');bs[i].disabled=true;}
+      });
+      if(ui.correct>=0&&bs[ui.correct]){
+        bs.forEach(b=>{b.classList.add('locked');b.disabled=true;});
+        bs[ui.correct].classList.remove('locked');
+        bs[ui.correct].classList.add('correct');
       }
+      $('feedback').className=ui.feedbackClass;
+      $('feedback').innerHTML=ui.feedbackHtml;
+      $('retryHint').textContent=ui.retry;
+      $('nextBtn').disabled=!ui.nextEnabled;
     }
-    if (ui.kind === 'posttest' && state.screen === 'posttest' && ui.completed) {
-      const buttons = [...document.querySelectorAll('#postOptions .option')];
-      buttons.forEach(b => { b.disabled = true; b.classList.add('locked'); });
-      if (ui.selected >= 0 && buttons[ui.selected]) {
-        buttons[ui.selected].classList.add('selected');
+    if(ui.kind==='posttest'&&state.screen==='posttest'){
+      state.postAnswered=ui.postAnswered;
+      const bs=[...$('postOptions').querySelectorAll('.option')];
+      if(ui.postAnswered){
+        bs.forEach(b=>{b.disabled=true;b.classList.add('locked');});
+        if(ui.selected>=0&&bs[ui.selected])bs[ui.selected].classList.add('selected');
       }
-      $('postNextBtn').disabled = false;
-    }
-  }
-
-  function makeHistoricalReadOnly(point) {
-    const active = document.querySelector('.screen.active');
-    if (!active) return;
-
-    active.querySelectorAll('button').forEach(b => b.disabled = true);
-
-    if (point.screen === 'quiz') {
-      const p = PHASES[point.phase];
-      const q = p && p.qs[point.q];
-      const buttons = [...document.querySelectorAll('#options .option')];
-      if (q && buttons[q.a]) {
-        buttons[q.a].classList.add('correct');
-        $('feedback').className = 'feedback show good';
-        $('feedback').innerHTML = '<strong>✓ Questão já concluída</strong>' + q.fb[q.a];
-        $('retryHint').textContent = 'Use Avançar para retornar ao ponto em que você estava.';
-      }
-    }
-
-    if (point.screen === 'pretest' || point.screen === 'posttest') {
-      const feedbackId = point.screen === 'posttest' ? 'postFeedback' : null;
-      if (feedbackId && $(feedbackId)) {
-        $(feedbackId).className = 'feedback';
-        $(feedbackId).innerHTML = '';
-      }
+      $('postNextBtn').disabled=!ui.nextEnabled;
     }
   }
 
-  function updateNavControls() {
-    const back = $('backBtn');
-    const forward = $('forwardBtn');
-    if (!back || !forward) return;
+  function review(p){
+    const id=p.screen;
+    if(id==='home'||id==='cast'){only(id);return;}
 
-    const canBack = nav.index > 0;
-    const canForward = nav.index < nav.trail.length - 1;
+    if(id==='pretest'){
+      const q=PRETEST[p.preIndex];
+      $('preCount').textContent=(p.preIndex+1)+' de '+PRETEST.length;
+      $('preScene').textContent=q.scene;$('preText').textContent=q.q;
+      const box=$('preOptions');box.innerHTML='';
+      q.opts.forEach(o=>{
+        const b=document.createElement('button');
+        b.type='button';b.className='option locked';b.textContent=o;b.disabled=true;
+        box.appendChild(b);
+      });
+      only('pretest');return;
+    }
 
-    back.disabled = !canBack;
-    forward.disabled = !canForward;
-    back.setAttribute('aria-hidden', 'false');
-    forward.setAttribute('aria-hidden', 'false');
+    if(id==='chapter'){
+      const ph=PHASES[p.phase],c=CHARACTERS[ph.speaker];
+      $('chapterImg').src=ph.img;$('chapterImg').alt='Ilustração do capítulo '+ph.id+': '+ph.title;
+      $('chapterNo').textContent='Capítulo '+ph.id+' de 6';
+      $('chapterTitle').textContent=ph.title;$('chapterSubtitle').textContent=ph.subtitle;
+      $('speakerImg').src=c.img;$('speakerImg').alt='Retrato de '+c.name;
+      $('speakerName').textContent=c.name;$('speakerText').textContent=ph.dialogue;
+      $('openLessonBtn').disabled=true;only('chapter');return;
+    }
 
-    back.title = canBack ? 'Voltar para a etapa anterior' : 'Você está no início';
-    forward.title = canForward ? 'Avançar até onde você estava' : 'Você está no ponto mais avançado';
+    if(id==='lesson'){
+      const ph=PHASES[p.phase];
+      $('lessonNo').textContent='Capítulo '+ph.id+' • leitura rápida';
+      $('lessonTitle').textContent=ph.title;
+      const g=$('lessonGrid');g.innerHTML='';
+      ph.lessons.forEach((l,i)=>{
+        const d=document.createElement('div');d.className='lesson-card';
+        d.innerHTML='<div class="n">Pista '+(i+1)+'</div><h3>'+l[0]+'</h3><p>'+l[1]+'</p>';
+        g.appendChild(d);
+      });
+      const compare=$('episodeCompare');
+      if(ph.id===2){
+        compare.hidden=false;
+        compare.innerHTML='<div class="episode-head"><h3>Comparativo visual</h3><p>As imagens são apenas ilustrações de apoio. Não substituem avaliação clínica e não devem ser lidas como caricaturas fixas de cada estado.</p></div><img class="episode-wide" src="assets/p2.webp" alt="Comparativo visual entre estabilidade, hipomania, mania e depressão"><div class="episode-summary">'+EPISODE_VISUALS.map(e=>'<article><h4><span class="episode-dot dot-'+e.cls+'"></span>'+e.title+'</h4><div class="small">'+e.tag+'</div><ul>'+e.items.map(i=>'<li>'+i+'</li>').join('')+'</ul></article>').join('')+'</div><p class="episode-note"><b>Importante:</b> mania e hipomania não significam simplesmente “estar feliz”. Irritabilidade, agitação e desconforto também podem aparecer.</p>';
+      }else{compare.hidden=true;compare.innerHTML='';}
+      $('lessonKey').textContent=ph.key;$('startMissionBtn').disabled=true;
+      only('lesson');return;
+    }
+
+    if(id==='quiz'){
+      const ph=PHASES[p.phase],q=ph.qs[p.q];
+      $('qMeta').textContent='Capítulo '+ph.id+' • '+ph.title;
+      $('qCount').textContent='Decisão '+(p.q+1)+' de '+ph.qs.length;
+      $('qScene').textContent=q.scene;$('qText').textContent=q.q;
+      const box=$('options');box.innerHTML='';
+      q.opts.forEach((o,i)=>{
+        const b=document.createElement('button');
+        b.type='button';b.className='option locked'+(i===q.a?' correct':'');
+        b.textContent=o;b.disabled=true;box.appendChild(b);
+      });
+      $('feedback').className='feedback show good';
+      $('feedback').innerHTML='<strong>✓ Questão já concluída</strong>'+q.fb[q.a];
+      $('retryHint').textContent='Você está revisando uma etapa já concluída.';
+      $('nextBtn').disabled=true;only('quiz');return;
+    }
+
+    if(id==='phaseDone'){
+      const ph=PHASES[p.phase];
+      $('badgeIcon').textContent=ph.icon;$('badgeTitle').textContent=ph.badge+' desbloqueado';
+      $('badgeText').textContent='Você concluiu “'+ph.title+'”.';
+      $('phaseAccuracy').textContent=p.phaseFirst+'/'+ph.qs.length+' na 1ª tentativa';
+      $('phaseXp').textContent='Capítulo concluído';
+      const ul=$('phaseTakeaways');ul.innerHTML='';
+      ph.lessons.forEach(l=>{const li=document.createElement('li');li.textContent=l[0]+': '+l[1];ul.appendChild(li);});
+      $('nextPhaseBtn').disabled=true;only('phaseDone');return;
+    }
+
+    if(id==='posttest'){
+      const q=POSTTEST[p.postIndex];
+      $('postCount').textContent=(p.postIndex+1)+' de '+POSTTEST.length;
+      $('postScene').textContent=q.scene;$('postText').textContent=q.q;
+      const box=$('postOptions');box.innerHTML='';
+      q.opts.forEach(o=>{
+        const b=document.createElement('button');
+        b.type='button';b.className='option locked';b.textContent=o;b.disabled=true;
+        box.appendChild(b);
+      });
+      $('postFeedback').className='feedback';$('postFeedback').innerHTML='';
+      $('postNextBtn').disabled=true;only('posttest');return;
+    }
+
+    only(id);
   }
 
-  const originalShow = show;
-  show = function(id, push = true) {
-    originalShow(id, push);
+  function liveLatest(){
+    const attempts=state.attempts,postAnswered=state.postAnswered;
+    nav.replaying=true;
+    renderScreen(state.screen,false);
+    nav.replaying=false;
+    state.attempts=attempts;state.postAnswered=postAnswered;
+    restoreLatest(nav.latestUi);
+  }
 
-    if (!nav.replaying && push) {
-      const point = viewPoint();
-      nav.trail = nav.trail.slice(0, nav.index + 1);
-      if (!samePoint(nav.trail[nav.index], point)) {
-        nav.trail.push(point);
-        nav.index = nav.trail.length - 1;
-      } else {
-        nav.trail[nav.index] = point;
-      }
-      nav.latestUi = null;
+  function update(){
+    const back=$('backBtn'),forward=$('forwardBtn');
+    if(!back||!forward)return;
+    back.disabled=nav.index<=0;
+    forward.disabled=nav.index>=nav.trail.length-1;
+    back.title=back.disabled?'Você está no início':'Voltar para uma etapa já visitada';
+    forward.title=forward.disabled?'Você está no ponto mais avançado':'Avançar pelas etapas já visitadas';
+  }
+
+  const originalShow=show;
+  show=function(id,push=true){
+    originalShow(id,push);
+    if(!nav.replaying&&push){
+      const p=point();
+      nav.trail=nav.trail.slice(0,nav.index+1);
+      if(!same(nav.trail[nav.index],p)){
+        nav.trail.push(p);nav.index=nav.trail.length-1;
+      }else nav.trail[nav.index]=p;
+      nav.latestUi=null;
     }
-    updateNavControls();
+    update();
   };
 
-  function renderTrailPoint(index) {
-    const point = nav.trail[index];
-    if (!point) return;
-
-    const liveState = state;
-    const tempState = {
-      ...liveState,
-      ...point,
-      badges: JSON.parse(JSON.stringify(point.badges || [])),
-      history: liveState.history
-    };
-
-    nav.replaying = true;
-    state = tempState;
-    renderScreen(point.screen, false);
-    state = liveState;
-    nav.replaying = false;
-
-    const atLatest = index === nav.trail.length - 1;
-    if (atLatest) {
-      applyLatestUi(nav.latestUi);
-      updateTop();
-    } else {
-      makeHistoricalReadOnly(point);
-    }
-    updateNavControls();
+  function backReview(){
+    if(nav.index<=0)return;
+    if(nav.index===nav.trail.length-1)nav.latestUi=captureLatest();
+    nav.index--;review(nav.trail[nav.index]);update();
+  }
+  function forwardReview(){
+    if(nav.index>=nav.trail.length-1)return;
+    nav.index++;
+    if(nav.index===nav.trail.length-1)liveLatest();
+    else review(nav.trail[nav.index]);
+    update();
   }
 
-  function customBack() {
-    if (nav.index <= 0) return;
-    if (nav.index === nav.trail.length - 1) nav.latestUi = captureCurrentUi();
-    nav.index -= 1;
-    renderTrailPoint(nav.index);
-  }
+  $('backBtn').addEventListener('click',e=>{
+    e.preventDefault();e.stopImmediatePropagation();backReview();
+  },true);
+  $('forwardBtn').addEventListener('click',e=>{
+    e.preventDefault();e.stopImmediatePropagation();forwardReview();
+  },true);
 
-  function customForward() {
-    if (nav.index >= nav.trail.length - 1) return;
-    nav.index += 1;
-    renderTrailPoint(nav.index);
-  }
-
-  const back = $('backBtn');
-  const forward = $('forwardBtn');
-
-  back.addEventListener('click', e => {
-    e.preventDefault();
-    e.stopImmediatePropagation();
-    customBack();
-  }, true);
-
-  forward.addEventListener('click', e => {
-    e.preventDefault();
-    e.stopImmediatePropagation();
-    customForward();
-  }, true);
-
-  // No feedback or answer key during the post-test.
-  answerPost = function(i) {
-    if (state.postAnswered) return;
-    state.postAnswered = true;
-    const q = POSTTEST[state.postIndex];
-    const buttons = [...$('postOptions').querySelectorAll('.option')];
-
-    buttons.forEach(b => {
-      b.disabled = true;
-      b.classList.add('locked');
-    });
-
-    if (i === q.a) state.postScore++;
-    if (buttons[i]) buttons[i].classList.add('selected');
-
-    $('postFeedback').className = 'feedback';
-    $('postFeedback').innerHTML = '';
-    $('postNextBtn').disabled = false;
+  answerPost=function(i){
+    if(state.postAnswered)return;
+    state.postAnswered=true;
+    const q=POSTTEST[state.postIndex];
+    const bs=[...$('postOptions').querySelectorAll('.option')];
+    bs.forEach(b=>{b.disabled=true;b.classList.add('locked');});
+    if(i===q.a)state.postScore++;
+    if(bs[i])bs[i].classList.add('selected');
+    $('postFeedback').className='feedback';$('postFeedback').innerHTML='';
+    $('postNextBtn').disabled=false;
   };
 
-  // Distinguish this iteration in collected metrics.
-  const originalBuildPayload = buildPayload;
-  buildPayload = function() {
-    return { ...originalBuildPayload(), version: 'v6' };
-  };
+  const originalBuildPayload=buildPayload;
+  buildPayload=function(){return {...originalBuildPayload(),version:'v7'};};
 
-  nav.trail = [viewPoint()];
-  nav.index = 0;
-  updateNavControls();
+  nav.trail=[point()];nav.index=0;update();
 })();
