@@ -211,21 +211,14 @@ function renderChapter(push=true){
   const grid=$('chapterEpisodeGrid');
   const img=$('chapterImg');
 
-  if(p.id===2 && grid){
-    img.hidden=true;
-    grid.hidden=false;
-    grid.innerHTML=EPISODE_VISUALS.map(e=>
-      '<article class="chapter-episode-card">'+
-        '<img src="'+e.img+'" alt="Ilustração de '+e.title+'">'+
-        '<div><span class="episode-dot dot-'+e.cls+'"></span><b>'+e.title+'</b></div>'+
-      '</article>'
-    ).join('');
-  }else{
-    if(grid){grid.hidden=true;grid.innerHTML='';}
-    img.hidden=false;
-    img.src=p.img;
-    img.alt='Ilustração do capítulo '+p.id+': '+p.title;
+  if(grid){
+    grid.hidden=true;
+    grid.innerHTML='';
   }
+
+  img.hidden=false;
+  img.src=p.img;
+  img.alt='Ilustração do capítulo '+p.id+': '+p.title;
 
   $('chapterNo').textContent='Capítulo '+p.id+' de 6';
   $('chapterTitle').textContent=p.title;
