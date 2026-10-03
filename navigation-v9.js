@@ -43,6 +43,14 @@ preventing disabled buttons from leaking into later chapters.
   }
 
   function captureLatestUi(){
+    if(state.screen==='pretest'){
+      const bs=[...$('preOptions').querySelectorAll('.option')];
+      return {
+        kind:'pretest',
+        selected:bs.findIndex(b=>b.classList.contains('selected')),
+        nextEnabled:!$('preNextBtn').disabled
+      };
+    }
     if(state.screen==='quiz'){
       const bs=[...$('options').querySelectorAll('.option')];
       return {
@@ -60,7 +68,6 @@ preventing disabled buttons from leaking into later chapters.
       const bs=[...$('postOptions').querySelectorAll('.option')];
       return {
         kind:'posttest',
-        postAnswered:state.postAnswered,
         nextEnabled:!$('postNextBtn').disabled,
         selected:bs.findIndex(b=>b.classList.contains('selected'))
       };
@@ -70,6 +77,13 @@ preventing disabled buttons from leaking into later chapters.
 
   function restoreLatestUi(ui){
     if(!ui)return;
+
+    if(ui.kind==='pretest'&&state.screen==='pretest'){
+      const bs=[...$('preOptions').querySelectorAll('.option')];
+      state.preSelected=ui.selected>=0?ui.selected:null;
+      if(ui.selected>=0&&bs[ui.selected]) bs[ui.selected].classList.add('selected');
+      $('preNextBtn').disabled=!ui.nextEnabled;
+    }
 
     if(ui.kind==='quiz'&&state.screen==='quiz'){
       state.attempts=ui.attempts;
@@ -95,13 +109,9 @@ preventing disabled buttons from leaking into later chapters.
     }
 
     if(ui.kind==='posttest'&&state.screen==='posttest'){
-      state.postAnswered=ui.postAnswered;
       const bs=[...$('postOptions').querySelectorAll('.option')];
-
-      if(ui.postAnswered){
-        bs.forEach(b=>{b.disabled=true;b.classList.add('locked');});
-        if(ui.selected>=0&&bs[ui.selected])bs[ui.selected].classList.add('selected');
-      }
+      state.postSelected=ui.selected>=0?ui.selected:null;
+      if(ui.selected>=0&&bs[ui.selected]) bs[ui.selected].classList.add('selected');
       $('postNextBtn').disabled=!ui.nextEnabled;
     }
   }
@@ -364,27 +374,6 @@ preventing disabled buttons from leaking into later chapters.
     e.stopImmediatePropagation();
     forwardReview();
   },true);
-
-  // Assessment-only post-test: record the response but do not teach the answer.
-  answerPost=function(i){
-    if(state.postAnswered)return;
-
-    state.postAnswered=true;
-    const q=POSTTEST[state.postIndex];
-    const bs=[...$('postOptions').querySelectorAll('.option')];
-
-    bs.forEach(b=>{
-      b.disabled=true;
-      b.classList.add('locked');
-    });
-
-    if(i===q.a)state.postScore++;
-    if(bs[i])bs[i].classList.add('selected');
-
-    $('postFeedback').className='feedback';
-    $('postFeedback').innerHTML='';
-    $('postNextBtn').disabled=false;
-  };
 
   const originalBuildPayload=buildPayload;
   buildPayload=function(){
