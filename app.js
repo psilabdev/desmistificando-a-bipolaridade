@@ -207,9 +207,37 @@ function renderPretest(push=true){
   show('pretest',push);
 }
 function renderChapter(push=true){
-  const p=PHASES[state.phase]; $('chapterImg').src=p.img; $('chapterImg').alt='Ilustração do capítulo '+p.id+': '+p.title;
-  $('chapterNo').textContent='Capítulo '+p.id+' de 6'; $('chapterTitle').textContent=p.title; $('chapterSubtitle').textContent=p.subtitle;
-  const c=CHARACTERS[p.speaker]; $('speakerImg').src=c.img; $('speakerImg').alt='Retrato de '+c.name; $('speakerName').textContent=c.name; $('speakerText').textContent=p.dialogue;
+  const p=PHASES[state.phase];
+  const grid=$('chapterEpisodeGrid');
+  const img=$('chapterImg');
+
+  if(p.id===2 && grid){
+    img.hidden=true;
+    grid.hidden=false;
+    grid.innerHTML=EPISODE_VISUALS.map(e=>
+      '<article class="chapter-episode-card">'+
+        '<img src="'+e.img+'" alt="Ilustração de '+e.title+'">'+
+        '<div><span class="episode-dot dot-'+e.cls+'"></span><b>'+e.title+'</b></div>'+
+      '</article>'
+    ).join('');
+  }else{
+    if(grid){grid.hidden=true;grid.innerHTML='';}
+    img.hidden=false;
+    img.src=p.img;
+    img.alt='Ilustração do capítulo '+p.id+': '+p.title;
+  }
+
+  $('chapterNo').textContent='Capítulo '+p.id+' de 6';
+  $('chapterTitle').textContent=p.title;
+  $('chapterSubtitle').textContent=p.subtitle;
+
+  const c=CHARACTERS[p.speaker];
+  $('speakerImg').src=c.img;
+  $('speakerImg').alt='Retrato de '+c.name;
+  $('speakerName').textContent=c.name;
+  $('speakerText').textContent=p.dialogue;
+
+  $('openLessonBtn').textContent='Ver os pontos principais';
   $('openLessonBtn').disabled=false;
   show('chapter',push);
 }
