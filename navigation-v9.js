@@ -377,7 +377,7 @@ preventing disabled buttons from leaking into later chapters.
 
   const originalBuildPayload=buildPayload;
   buildPayload=function(){
-    return {...originalBuildPayload(),version:'v9'};
+    return {...originalBuildPayload(),version:'v14'};
   };
 
   nav.trail=[point()];
