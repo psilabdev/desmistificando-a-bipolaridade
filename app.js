@@ -2,7 +2,7 @@
 const CHARACTERS={
   rafa:{name:'Rafa',img:'assets/rafa.webp'},
   bia:{name:'Bia',img:'assets/bia.webp'},
-  maya:{name:'Dra. Maya',img:'assets/maya.webp'}
+  maya:{name:'Psicóloga Maya',img:'assets/maya.svg'}
 };
 
 const EPISODE_VISUALS=[
@@ -24,16 +24,16 @@ const PHASES=[
  key:'Ponto-chave: aprender sinais ajuda no cuidado, mas reconhecer sinais não é o mesmo que fazer diagnóstico.',
  takeaway:'Bipolaridade não é sinônimo de “mudar de humor”. O diagnóstico depende de episódios e de avaliação clínica ao longo do tempo.',
  qs:[
-  {scene:'Bia tenta resumir o diagnóstico para a família.',q:'Qual frase é a mais adequada?',opts:['“Bipolaridade é mudar de opinião ou de humor várias vezes no mesmo dia.”','“Bipolaridade envolve episódios com mudanças importantes de humor, energia e funcionamento.”','“Qualquer pessoa muito emotiva é bipolar.”','“Se alguém está animado, provavelmente está em mania.”'],a:1,
+  {scene:'Bia, irmã de Rafa, tenta resumir o diagnóstico para a família.',q:'Qual frase é a mais adequada?',opts:['“Bipolaridade é mudar de opinião ou de humor várias vezes no mesmo dia.”','“Bipolaridade envolve episódios com mudanças importantes de humor, energia e funcionamento.”','“Qualquer pessoa muito emotiva é bipolar.”','“Se alguém está animado, provavelmente está em mania.”'],a:1,
    fb:['Mudanças cotidianas não definem o transtorno. O foco está em episódios e mudanças clinicamente relevantes.','Isso. O diagnóstico considera padrões de humor, energia, atividade e impacto no funcionamento.','Emotividade não equivale a Transtorno Bipolar.','Animação isolada não é mania. É preciso avaliar um conjunto de sinais, duração e impacto.']},
-  {scene:'Dra. Maya explica que “bipolaridade” não é uma única apresentação.',q:'Qual alternativa descreve corretamente o Transtorno Bipolar I?',opts:['É definido pela presença de pelo menos um episódio maníaco.','É definido apenas por episódios depressivos.','É o mesmo que ciclotimia.','Exige que a pessoa alterne de humor todos os dias.'],a:0,
+  {scene:'Maya, psicóloga que acompanha a jornada, explica que “bipolaridade” não é uma única apresentação.',q:'Qual alternativa descreve corretamente o Transtorno Bipolar I?',opts:['É definido pela presença de pelo menos um episódio maníaco.','É definido apenas por episódios depressivos.','É o mesmo que ciclotimia.','Exige que a pessoa alterne de humor todos os dias.'],a:0,
    fb:['Correto. O episódio maníaco é central para o diagnóstico de Transtorno Bipolar I.','Episódios depressivos podem ocorrer, mas não definem sozinhos o Bipolar I.','Ciclotimia é uma condição distinta dentro do espectro bipolar.','Oscilações diárias não são um critério definidor.']},
   {scene:'Depois de um prazo de trabalho, Rafa dormiu pouco por duas noites e ficou mais acelerado.',q:'Isso, sozinho, confirma um episódio bipolar?',opts:['Sim, qualquer redução do sono confirma hipomania.','Sim, se a pessoa se sentir produtiva.','Não. É necessário avaliar padrão, duração, outros sintomas, contexto e impacto.','Não, porque sono nunca tem relação com episódios de humor.'],a:2,
    fb:['Sono reduzido pode ser uma pista, mas não fecha diagnóstico isoladamente.','Produtividade também pode ocorrer fora de episódios.','Exatamente. O diagnóstico exige avaliação clínica contextual e longitudinal.','Mudanças no sono podem ser relevantes, mas precisam ser interpretadas em conjunto.']}
  ]
 },
 {
- id:2,title:'Lendo os episódios de humor',subtitle:'Rafa e Dra. Maya revisam momentos diferentes da história para entender padrões.',img:'assets/p2.webp',speaker:'maya',
+ id:2,title:'Lendo os episódios de humor',subtitle:'Rafa e a psicóloga Maya revisam momentos diferentes da história para entender padrões.',img:'assets/p2.webp',speaker:'maya',
  dialogue:'“Não vamos transformar cada emoção em sintoma. Vamos observar conjuntos de mudanças e o quanto elas alteraram a vida de Rafa.”',badge:'Lente dos Episódios',icon:'🔎',
  lessons:[
   ['Mania','Não é simplesmente “estar muito feliz”. Pode envolver humor elevado, expansivo ou irritável, aumento marcante de energia, menor necessidade de sono, fala acelerada, distração, grandiosidade e comportamentos de risco. Em quadros graves pode haver psicose ou necessidade de internação.'],
@@ -62,7 +62,7 @@ const PHASES=[
  key:'Ponto-chave: o melhor sinal de alerta costuma ser uma mudança significativa em relação ao padrão habitual da própria pessoa.',
  takeaway:'Sono, energia, comportamento, impulsividade e humor podem funcionar como sinais de alerta quando mudam de modo persistente em relação ao padrão habitual.',
  qs:[
-  {scene:'Bia percebe que Rafa dormiu 3 horas por noite durante vários dias, está muito mais acelerado e começou a fazer compras incomuns.',q:'Qual atitude é mais coerente com psicoeducação?',opts:['Ignorar porque sono não importa.','Observar o conjunto de mudanças e conversar com Rafa sobre procurar orientação da equipe.','Concluir sozinha que é mania e anunciar o diagnóstico.','Confiscar todos os objetos pessoais sem conversar.'],a:1,
+  {scene:'Bia, irmã de Rafa, percebe que ele dormiu 3 horas por noite durante vários dias, está muito mais acelerado e começou a fazer compras incomuns.',q:'Qual atitude é mais coerente com psicoeducação?',opts:['Ignorar porque sono não importa.','Observar o conjunto de mudanças e conversar com Rafa sobre procurar orientação da equipe.','Concluir sozinha que é mania e anunciar o diagnóstico.','Confiscar todos os objetos pessoais sem conversar.'],a:1,
    fb:['Sono pode ser uma pista importante quando muda muito em relação ao habitual.','Isso. Observar padrões e favorecer contato com a equipe é mais útil do que diagnosticar por conta própria.','Familiares não devem fechar diagnóstico com base em sinais isolados.','Apoio não é sinônimo de controle indiscriminado.']},
   {scene:'Rafa decide montar um registro simples para levar às consultas.',q:'Qual combinação tende a ser mais útil?',opts:['Apenas “dia bom” ou “dia ruim”.','Sono, humor, energia, nível de atividade/impulsividade e acontecimentos relevantes.','Somente peso corporal.','A opinião de outras pessoas, sem registrar a própria experiência.'],a:1,
    fb:['Um registro tão genérico perde informações importantes.','Ótimo. Esses dados podem ajudar a observar padrões sem transformar o diário em ferramenta diagnóstica.','Peso pode ser relevante em alguns contextos clínicos, mas não resume a variação de humor.','A percepção de outras pessoas pode ajudar, mas não substitui a experiência da própria pessoa.']},
@@ -83,24 +83,26 @@ const PHASES=[
  qs:[
   {scene:'Um parente comenta: “bipolar é quem muda de humor toda hora”.',q:'Como classificar essa afirmação?',opts:['Mito','Verdade'],a:0,fb:['Correto. O transtorno é definido por episódios e padrões clínicos, não por qualquer mudança rápida de humor.','Essa frase simplifica demais e reforça uma confusão comum.']},
   {scene:'Outro familiar diz: “se a pessoa está estável, então nunca mais precisa conversar sobre prevenção”.',q:'Como classificar?',opts:['Mito','Verdade'],a:0,fb:['Isso. Estabilidade é importante, mas prevenção de recaídas, acompanhamento e reconhecimento de sinais continuam relevantes.','A estabilidade não torna planejamento e prevenção automaticamente desnecessários.']},
-  {scene:'Bia afirma: “o diagnóstico não resume quem o Rafa é, e com cuidado adequado ele pode construir uma vida significativa”.',q:'Essa fala está alinhada com uma abordagem baseada em recuperação?',opts:['Não','Sim'],a:1,fb:['Uma abordagem de recuperação não reduz a pessoa ao transtorno.','Exato. Tratamento e apoio podem favorecer autonomia, funcionamento e qualidade de vida.']}
+  {scene:'Bia, como irmã de Rafa, afirma: “o diagnóstico não resume quem ele é, e com cuidado adequado ele pode construir uma vida significativa”.',q:'Essa fala está alinhada com uma abordagem baseada em recuperação?',opts:['Não','Sim'],a:1,fb:['Uma abordagem de recuperação não reduz a pessoa ao transtorno.','Exato. Tratamento e apoio podem favorecer autonomia, funcionamento e qualidade de vida.']}
  ]
 },
 {
  id:5,title:'Quando melhorar dá vontade de largar tudo',subtitle:'Rafa está estável há meses e começa a questionar por que ainda precisa de cuidado.',img:'assets/p5.webp',speaker:'rafa',
  dialogue:'“Se eu estou bem agora, talvez eu não precise mais de nada. E se eu simplesmente parar?”',badge:'Aliado do Cuidado',icon:'🧩',
  lessons:[
-  ['Tratamento costuma ser combinado','Para muitas pessoas, o cuidado inclui medicamentos e intervenções psicológicas ou psicossociais. A combinação é individualizada e deve considerar benefícios, efeitos adversos e preferências.'],
-  ['Estabilidade pode ser resultado do cuidado','Sentir-se bem não significa necessariamente que o tratamento deixou de ser necessário. Mudanças de medicação devem ser discutidas com o profissional prescritor.'],
+  ['Medicação tem papel central na prevenção de recaídas','No Transtorno Bipolar, o tratamento farmacológico de manutenção é um componente central para muitas pessoas. O medicamento e a estratégia devem ser individualizados, com acompanhamento do profissional prescritor e monitoramento de benefícios e efeitos adversos.'],
+  ['Adesão e segurança','Uso irregular ou interrupção por conta própria estão associados a maior risco de recaídas, recorrência e hospitalizações e também aparecem relacionados a maior risco de tentativas de suicídio. Dúvidas, efeitos adversos ou dificuldades para manter o tratamento devem ser conversados com a equipe para ajustar o plano com segurança.'],
+  ['Estabilidade pode ser resultado do cuidado','Sentir-se bem não significa necessariamente que o tratamento deixou de ser necessário. Redução, troca ou interrupção de medicação devem ser discutidas com o profissional prescritor.'],
+  ['E a chamada neuroprogressão?','Alguns modelos de pesquisa investigam se episódios recorrentes e maior carga de doença podem se associar a mudanças biológicas, cognitivas e funcionais ao longo do tempo. A evidência ainda não permite afirmar que deixar de tomar medicação cause diretamente neuroprogressão. O ponto mais sólido é prevenir recaídas e reduzir a carga de episódios com tratamento individualizado.'],
   ['Rotina também importa','Sono regular, atividade física, alimentação saudável, redução de estressores e monitoramento do humor podem complementar o tratamento, sem substituí-lo.']
  ],
- key:'Ponto-chave: adesão não é obediência cega. É participação informada e compartilhada nas decisões de cuidado.',
- takeaway:'O cuidado costuma combinar tratamento médico e intervenções psicossociais. Mudanças em medicação devem ser discutidas com quem prescreve.',
+ key:'Ponto-chave: adesão não é obediência cega. É manter um plano de tratamento construído com informação, acompanhamento e decisão compartilhada — inclusive conversando sobre efeitos adversos e dificuldades reais para seguir a medicação.',
+ takeaway:'A medicação de manutenção tem papel importante na prevenção de recaídas para muitas pessoas com Transtorno Bipolar. Mudanças devem ser discutidas com quem prescreve, junto de intervenções psicológicas, rotina e rede de apoio.',
  qs:[
-  {scene:'Dra. Maya pergunta o que Rafa entende por “tratamento”.',q:'Qual resposta é mais completa?',opts:['Apenas força de vontade.','Apenas psicoterapia, independentemente do quadro.','Um plano individualizado que pode combinar medicamentos e intervenções psicológicas/psicossociais.','Tomar qualquer medicação indicada por amigos.'],a:2,
+  {scene:'Maya conversa com Rafa sobre o que ele entende por “tratamento”.',q:'Qual resposta é mais completa?',opts:['Apenas força de vontade.','Apenas psicoterapia, independentemente do quadro.','Um plano individualizado que pode combinar medicamentos e intervenções psicológicas/psicossociais.','Tomar qualquer medicação indicada por amigos.'],a:2,
    fb:['Força de vontade não substitui tratamento.','Psicoterapia pode ser importante, mas o cuidado costuma ser combinado.','Correto. O plano deve ser individualizado e construído com profissionais.','Medicamentos exigem indicação e acompanhamento profissional.']},
   {scene:'Rafa pensa em interromper a medicação porque está bem.',q:'Qual é a orientação mais segura?',opts:['Parar imediatamente.','Reduzir a dose por conta própria.','Conversar com o profissional prescritor antes de qualquer mudança.','Substituir por álcool ou suplementos.'],a:2,
-   fb:['Interrupção abrupta pode trazer riscos e deve ser evitada sem orientação.','Ajustes de dose também precisam ser discutidos com o prescritor.','Isso. Decisões sobre medicação devem ser compartilhadas com o profissional responsável.','Álcool e suplementos não substituem tratamento prescrito.']},
+   fb:['Interromper por conta própria pode aumentar o risco de recaída e outros desfechos graves. Mudanças devem ser feitas com orientação profissional.','Ajustes de dose também precisam ser discutidos com o prescritor.','Isso. Manter o tratamento combinado com o prescritor ajuda a prevenir recaídas; se houver efeitos adversos ou dificuldades de adesão, o plano pode ser revisto em conjunto.','Álcool e suplementos não substituem tratamento prescrito e podem trazer riscos adicionais.']},
   {scene:'Rafa quer complementar o tratamento com hábitos cotidianos.',q:'Qual conjunto está mais alinhado às recomendações gerais?',opts:['Sono regular, atividade física, alimentação saudável, redução de estressores e monitoramento do humor.','Virar noites para “testar” o humor.','Evitar consultas quando estiver bem.','Usar álcool para dormir.'],a:0,
    fb:['Perfeito. Esses hábitos podem complementar o cuidado.','Privação de sono pode piorar sintomas.','Acompanhamento não serve apenas para crises.','Álcool não é estratégia de tratamento do sono ou do transtorno.']}
  ]
@@ -116,9 +118,9 @@ const PHASES=[
  key:'Ponto-chave: uma boa rede de apoio amplia segurança e autonomia. Ela não substitui profissionais e não precisa esperar a crise ficar grave para procurar orientação.',
  takeaway:'Rede de apoio envolve escuta, sinais combinados, contatos de cuidado e um plano claro para situações de urgência.',
  qs:[
-  {scene:'Bia percebe redução intensa do sono, agitação e comportamento de risco.',q:'Qual resposta tende a ser mais útil?',opts:['Ridicularizar Rafa para que “caia na realidade”.','Entrar em confronto e discutir até ele concordar.','Abordar com calma, reduzir riscos e favorecer contato com a equipe de saúde.','Esperar obrigatoriamente piorar antes de agir.'],a:2,
+  {scene:'Bia, irmã de Rafa, percebe redução intensa do sono, agitação e comportamento de risco.',q:'Qual resposta tende a ser mais útil?',opts:['Ridicularizar Rafa para que “caia na realidade”.','Entrar em confronto e discutir até ele concordar.','Abordar com calma, reduzir riscos e favorecer contato com a equipe de saúde.','Esperar obrigatoriamente piorar antes de agir.'],a:2,
    fb:['Vergonha costuma aumentar conflito e estigma.','Confronto intenso pode dificultar comunicação.','Isso. Calma, segurança e conexão com cuidado profissional são prioridades.','Não é necessário esperar a situação se agravar para buscar orientação.']},
-  {scene:'Dra. Maya pergunta em que situação a família deve pensar em atendimento urgente.',q:'Qual alternativa apresenta sinais de maior urgência?',opts:['Uma dúvida sobre um texto na internet.','Risco de suicídio, comportamento perigoso, agitação grave ou sintomas psicóticos importantes.','Um dia de cansaço após trabalho intenso.','Vontade de revisar a rotina na próxima consulta.'],a:1,
+  {scene:'Maya conversa com a família sobre quando buscar atendimento urgente.',q:'Qual alternativa apresenta sinais de maior urgência?',opts:['Uma dúvida sobre um texto na internet.','Risco de suicídio, comportamento perigoso, agitação grave ou sintomas psicóticos importantes.','Um dia de cansaço após trabalho intenso.','Vontade de revisar a rotina na próxima consulta.'],a:1,
    fb:['Essa situação pode ser discutida sem urgência.','Correto. Esses sinais podem exigir atendimento imediato.','Cansaço isolado não indica emergência.','Planejamento rotineiro pode ser feito em acompanhamento regular.']},
   {scene:'A família quer registrar contatos úteis para o Brasil.',q:'Qual combinação está correta?',opts:['CAPS/UBS podem acolher demandas de saúde mental; UPA, pronto-socorro e SAMU 192 atendem urgências; CVV 188 oferece apoio emocional.','CVV 188 substitui atendimento médico de emergência.','SAMU 192 atende apenas acidentes de trânsito.','CAPS só atende pessoas internadas.'],a:0,
    fb:['Exato. Essa combinação diferencia cuidado territorial, urgência e apoio emocional.','O CVV é apoio emocional e não substitui emergência médica.','O SAMU também atende urgências clínicas e psiquiátricas.','CAPS é serviço comunitário da RAPS e não se limita a internações.']}
@@ -137,16 +139,16 @@ const PRETEST=[
  {scene:'Uma amiga diz que “bipolaridade é quando a pessoa muda de humor várias vezes no mesmo dia”.',q:'Qual resposta é mais adequada?',opts:['Isso define o transtorno.','Não necessariamente. O diagnóstico envolve episódios, duração, intensidade e impacto.','Isso só seria bipolaridade se houvesse tristeza.','Qualquer oscilação de humor confirma hipomania.'],a:1},
  {scene:'Rafa pergunta se mania significa apenas “estar muito feliz”.',q:'Qual resposta é mais precisa?',opts:['Sim. Mania é felicidade extrema.','Não. Pode haver humor elevado, expansivo ou irritável, além de aceleração, pouco sono e prejuízo.','Sim, desde que a pessoa esteja produtiva.','Não. Mania é apenas insônia.'],a:1},
  {scene:'Rafa está estável há alguns meses com acompanhamento.',q:'O que essa estabilidade sugere?',opts:['Que o tratamento pode ser abandonado sem conversa com profissionais.','Que estabilidade é desejável e pode estar relacionada ao cuidado em curso.','Que o diagnóstico estava necessariamente errado.','Que a prevenção deixou de ser importante.'],a:1},
- {scene:'Bia percebe pouco sono, aceleração e gastos incomuns por vários dias.',q:'Qual atitude é mais adequada?',opts:['Fechar o diagnóstico sozinha.','Observar o conjunto e favorecer contato com a equipe de saúde.','Ignorar até haver uma crise grave.','Discutir até Rafa admitir que está em mania.'],a:1},
+ {scene:'Bia, irmã de Rafa, percebe pouco sono, aceleração e gastos incomuns por vários dias.',q:'Qual atitude é mais adequada?',opts:['Fechar o diagnóstico sozinha.','Observar o conjunto e favorecer contato com a equipe de saúde.','Ignorar até haver uma crise grave.','Discutir até Rafa admitir que está em mania.'],a:1},
  {scene:'Há risco de suicídio e comportamento perigoso.',q:'Qual conduta é mais segura?',opts:['Esperar a próxima consulta de rotina.','Buscar avaliação urgente e priorizar segurança.','Resolver apenas com um teste online.','Evitar falar com serviços de saúde para não alarmar.'],a:1}
 ];
 
 const POSTTEST=[
- {scene:'Rafa está falando muito mais rápido, dormindo muito pouco e tomando decisões financeiras arriscadas. Bia percebe que isso é muito diferente do habitual.',q:'Qual raciocínio mostra melhor o que você aprendeu?',opts:['É apenas felicidade intensa.','O conjunto de mudanças pode indicar um episódio e merece avaliação profissional.','É possível confirmar mania apenas pela fala rápida.','Nada disso tem relação com episódios de humor.'],a:1,exp:'O conjunto de sinais, a mudança em relação ao habitual, a duração e o impacto são mais informativos do que um sintoma isolado.'},
+ {scene:'Rafa está falando muito mais rápido, dormindo muito pouco e tomando decisões financeiras arriscadas. Bia, sua irmã, percebe que isso é muito diferente do habitual.',q:'Qual raciocínio mostra melhor o que você aprendeu?',opts:['É apenas felicidade intensa.','O conjunto de mudanças pode indicar um episódio e merece avaliação profissional.','É possível confirmar mania apenas pela fala rápida.','Nada disso tem relação com episódios de humor.'],a:1,exp:'O conjunto de sinais, a mudança em relação ao habitual, a duração e o impacto são mais informativos do que um sintoma isolado.'},
  {scene:'Uma pessoa apresenta mais energia, menos necessidade de sono e maior sociabilidade, mas sem prejuízo grave, psicose ou necessidade de internação.',q:'Qual conceito é mais compatível?',opts:['Hipomania','Mania grave','Depressão','Estabilidade'],a:0,exp:'Hipomania envolve ativação e mudança clara do funcionamento, mas não tem a mesma gravidade típica da mania.'},
  {scene:'Durante um episódio depressivo, surgem também agitação e pensamentos acelerados.',q:'O que é importante considerar?',opts:['Polos diferentes nunca coexistem.','Podem existir características mistas.','Isso sempre significa erro diagnóstico.','Agitação confirma mania completa.'],a:1,exp:'Características mistas podem ocorrer e são clinicamente relevantes.'},
  {scene:'Rafa quer parar a medicação porque está se sentindo bem.',q:'Qual resposta é mais segura?',opts:['Parar imediatamente.','Conversar com o profissional prescritor antes de qualquer mudança.','Trocar por suplementos por conta própria.','Esperar uma recaída para decidir.'],a:1,exp:'Estabilidade não significa que mudanças em medicação devam ser feitas sem o prescritor.'},
- {scene:'Bia quer apoiar Rafa quando percebe sinais importantes de piora.',q:'Qual postura tende a ser mais útil?',opts:['Escuta, calma, redução de riscos e contato com a rede de cuidado.','Humilhação para ele perceber a gravidade.','Controle total da vida dele.','Esperar sempre até a crise ficar extrema.'],a:0,exp:'Apoio tende a funcionar melhor com calma, segurança, respeito à autonomia e conexão com os serviços quando necessário.'}
+ {scene:'Bia, irmã de Rafa, quer apoiá-lo quando percebe sinais importantes de piora.',q:'Qual postura tende a ser mais útil?',opts:['Escuta, calma, redução de riscos e contato com a rede de cuidado.','Humilhação para ele perceber a gravidade.','Controle total da vida dele.','Esperar sempre até a crise ficar extrema.'],a:0,exp:'Apoio tende a funcionar melhor com calma, segurança, respeito à autonomia e conexão com os serviços quando necessário.'}
 ];
 
 const SOURCES_EXTRA=[
@@ -154,16 +156,36 @@ const SOURCES_EXTRA=[
  ['National Institute of Mental Health — Bipolar Disorder','https://www.nimh.nih.gov/health/publications/bipolar-disorder'],
  ['Ministério da Saúde — CAPS','https://www.gov.br/saude/pt-br/composicao/saes/desmad/raps/caps/caps/'],
  ['Ministério da Saúde — SAMU 192','https://www.gov.br/saude/pt-br/composicao/saes/samu-192'],
- ['CVV','https://cvv.org.br/']
+ ['CVV','https://cvv.org.br/'],
+ ['NICE — Bipolar disorder: assessment and management','https://www.nice.org.uk/guidance/cg185/chapter/recommendations'],
+ ['Systematic review — medication adherence in bipolar disorder','https://pubmed.ncbi.nlm.nih.gov/34006337/'],
+ ['Systematic review — biomarkers and neuroprogression in bipolar disorder','https://pubmed.ncbi.nlm.nih.gov/35403455/']
 ];
 
 const METRICS_ENDPOINT='https://nayxpmyeqddqhxzragsw.supabase.co/rest/v1/learning_results';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_Cp9jZNth2r8FYO_Hy5iH3w_Wf_Tc-1W';
+function shuffleQuestionOptions(q){
+  const oldAnswer=q.a;
+  const items=q.opts.map((opt,i)=>({opt,original:i,fb:q.fb?q.fb[i]:null}));
+  for(let i=items.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [items[i],items[j]]=[items[j],items[i]];
+  }
+  q.opts=items.map(x=>x.opt);
+  q.a=items.findIndex(x=>x.original===oldAnswer);
+  if(q.fb) q.fb=items.map(x=>x.fb);
+}
+[
+  ...PRETEST,
+  ...POSTTEST,
+  ...PHASES.flatMap(p=>p.qs)
+].forEach(shuffleQuestionOptions);
+
 const $=id=>document.getElementById(id);
 const screens=[...document.querySelectorAll('.screen')];
 let state;
 function resetState(){
-  state={phase:0,q:0,xp:0,firstTryCorrect:0,answeredQuestions:0,reviewed:0,attempts:0,phaseFirst:0,phaseXpStart:0,badges:[],completed:0,screen:'home',history:[],preIndex:0,preScore:0,postIndex:0,postScore:0,postAnswered:false,preSelected:null,postSelected:null,startTs:Date.now(),sent:false,sessionId:(crypto.randomUUID?crypto.randomUUID():('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0,v=c==='x'?r:(r&3|8);return v.toString(16)})))};
+  state={phase:0,q:0,xp:0,firstTryCorrect:0,answeredQuestions:0,reviewed:0,attempts:0,phaseFirst:0,phaseXpStart:0,badges:[],completed:0,screen:'home',history:[],preIndex:0,preScore:0,postIndex:0,postScore:0,postAnswered:false,preSelected:null,postSelected:null,preAnswers:[],postAnswers:[],practiceFirstTryByItem:[],startTs:Date.now(),sent:false,sessionId:(crypto.randomUUID?crypto.randomUUID():('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0,v=c==='x'?r:(r&3|8);return v.toString(16)})))};
 }
 resetState();
 
@@ -227,7 +249,14 @@ function renderPretest(push=true){
 function confirmPretest(){
   if(state.preSelected===null) return;
   const q=PRETEST[state.preIndex];
-  if(state.preSelected===q.a) state.preScore++;
+  const preCorrect=state.preSelected===q.a;
+  if(preCorrect) state.preScore++;
+  state.preAnswers[state.preIndex]={
+    question:q.q,
+    selected:q.opts[state.preSelected],
+    correct:q.opts[q.a],
+    is_correct:preCorrect
+  };
 
   if(state.preIndex<PRETEST.length-1){
     state.preIndex++;
@@ -305,6 +334,7 @@ function answerPractice(i){
   if(i===q.a){
     buttons.forEach(b=>{b.classList.add('locked'); b.disabled=true}); selected.classList.remove('locked'); selected.classList.add('correct');
     const first=state.attempts===1; const earned=first?20:10; state.xp+=earned; state.answeredQuestions++; if(first){state.firstTryCorrect++; state.phaseFirst++;}
+    state.practiceFirstTryByItem.push({chapter:p.id,question:q.q,first_try:first});
     fb.className='feedback show good'; fb.innerHTML='<strong>✓ '+(first?'Acerto na primeira tentativa':'Conceito revisado e consolidado')+'</strong>'+q.fb[i]+'<div class="reward"><span>+'+earned+' XP</span>'+(first?'<span>Precisão +1</span>':'<span>Aprendeu após revisão</span>')+'</div>';
     $('retryHint').textContent=''; $('nextBtn').disabled=false; updateTop();
   }else{
@@ -364,7 +394,14 @@ function nextPost(){
   if(state.postSelected===null) return;
 
   const q=POSTTEST[state.postIndex];
-  if(state.postSelected===q.a) state.postScore++;
+  const postCorrect=state.postSelected===q.a;
+  if(postCorrect) state.postScore++;
+  state.postAnswers[state.postIndex]={
+    question:q.q,
+    selected:q.opts[state.postSelected],
+    correct:q.opts[q.a],
+    is_correct:postCorrect
+  };
   state.postAnswered=true;
 
   if(state.postIndex<POSTTEST.length-1){
@@ -379,7 +416,7 @@ function renderJournal(){
 }
 function learningGain(){return state.postScore-state.preScore}
 function interpretation(){const g=learningGain(); if(g>=3) return 'Houve um ganho claro de aprendizagem entre o pré-teste e o pós-teste.'; if(g>=1) return 'Houve melhora no desempenho final. Vale revisar os pontos do Caderno para consolidar ainda mais.'; if(g===0) return 'O desempenho ficou estável. Isso pode indicar conhecimento prévio ou necessidade de revisar alguns conceitos para consolidar melhor.'; return 'O pós-teste teve menos acertos que o pré-teste. Isso não significa fracasso. Use o Caderno de Bordo e os feedbacks para revisar os pontos que geraram dúvida.';}
-function buildPayload(){return {session_id:state.sessionId,participant_id:$('participantId').value.trim()||null,duration_seconds:Math.round((Date.now()-state.startTs)/1000),pretest_score:state.preScore,posttest_score:state.postScore,learning_gain:learningGain(),practice_first_try:state.firstTryCorrect,practice_total:PHASES.reduce((n,p)=>n+p.qs.length,0),practice_reviewed:state.reviewed,xp:state.xp,badges:state.badges.map(b=>b.title),version:'v5',user_agent:navigator.userAgent.slice(0,500)};}
+function buildPayload(){return {session_id:state.sessionId,participant_id:null,duration_seconds:Math.round((Date.now()-state.startTs)/1000),pretest_score:state.preScore,posttest_score:state.postScore,learning_gain:learningGain(),practice_first_try:state.firstTryCorrect,practice_total:PHASES.reduce((n,p)=>n+p.qs.length,0),practice_reviewed:state.reviewed,xp:state.xp,badges:state.badges.map(b=>b.title),version:'v14',pre_answers:state.preAnswers,post_answers:state.postAnswers,practice_first_try_by_item:state.practiceFirstTryByItem};}
 async function saveMetrics(){
   const status=$('saveStatus'); const payload=buildPayload();
   if(!METRICS_ENDPOINT){status.textContent='Nenhum endpoint configurado. Use o botão “Baixar resultado” ou edite a constante METRICS_ENDPOINT no app.js.'; return;}
